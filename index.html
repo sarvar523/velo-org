@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BolaSport - Velosiped va Pultli Mashinalar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS STYLES */
+        :root {
+            --primary: #ff6b35;
+            --secondary: #00a8ff;
+            --accent: #9c88ff;
+            --dark: #2d3436;
+            --light: #f9f9f9;
+            --gray: #636e72;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --radius: 10px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: white;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .cart-btn {
+            position: relative;
+        }
+
+        .cart-count {
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            position: absolute;
+            top: -8px;
+            right: -8px;
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                url('https://images.unsplash.com/photo-1511994717241-8e4e484dfa8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+            margin-bottom: 40px;
+        }
+
+        .hero h2 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* FILTERS */
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            padding: 20px;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .filter-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+            cursor: pointer;
+            transition: border 0.3s;
+        }
+
+        .filter-select:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        /* PRODUCTS */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--primary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            z-index: 1;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 3px solid #f0f0f0;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-category {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-bottom: 8px;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--dark);
+            height: 60px;
+            overflow: hidden;
+        }
+
+        .product-price {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 15px 0;
+        }
+
+        .product-old-price {
+            font-size: 1rem;
+            color: var(--gray);
+            text-decoration: line-through;
+            margin-right: 10px;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 12px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: background 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background: #0097e6;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--radius);
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        /* FORM STYLES */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: background 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #e55a2e;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-btn {
+                padding: 8px 15px;
+                font-size: 0.85rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-bicycle"></i>
+                <p>Abu Sahiy Velosiped-Bolalar Moshinasi</p>
+            </div>
+
+            <nav class="nav">
+                <button class="nav-btn active" onclick="showAll()">
+                    <i class="fas fa-home"></i> Barchasi
+                </button>
+                <button class="nav-btn" onclick="filterByCategory('velosiped')">
+                    <i class="fas fa-bicycle"></i> Velosipedlar
+                </button>
+                <button class="nav-btn" onclick="filterByCategory('mashina')">
+                    <i class="fas fa-car"></i> Mashinalar
+                </button>
+                <button class="nav-btn cart-btn" onclick="showCart()">
+                    <i class="fas fa-shopping-cart"></i> Savat
+                    <span class="cart-count" id="cart-count">0</span>
+                </button>
+                <button class="nav-btn admin-btn" onclick="showAdminLogin()">
+                    <i class="fas fa-user-cog"></i> Admin
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="container">
+            <h2>Bolalar uchun Velosiped va Mashinalar</h2>
+            <p>Eng zo'r brendlar, sifatli mahsulotlar, kafolatli xizmat</p>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+        <!-- FILTERS -->
+        <div class="filters">
+            <div class="filter-group">
+                <label class="filter-label">Saralash</label>
+                <select class="filter-select" id="sort-filter" onchange="sortProducts()">
+                    <option value="default">Standart</option>
+                    <option value="price-asc">Arzondan qimmatga</option>
+                    <option value="price-desc">Qimmatdan arzonga</option>
+                    <option value="name">Alifbo bo'yicha</option>
+                </select>
+            </div>
+
+            <button class="nav-btn" style="background: var(--accent);" onclick="resetFilters()">
+                <i class="fas fa-redo"></i> Tozalash
+            </button>
+        </div>
+
+        <!-- PRODUCTS GRID -->
+        <div class="products-grid" id="products-grid">
+            <!-- Mahsulotlar JavaScript orqali yuklanadi -->
+        </div>
+
+        <!-- STATS -->
+        <div
+            style="text-align: center; background: rgb(49, 40, 126); padding: 30px; border-radius: var(--radius); box-shadow: var(--shadow);">
+            <h3 style="margin-bottom: 20px; color: var(--primary);">Nega bizni tanlashadi?</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                <div>
+                    <i class="fas fa-shield-alt"
+                        style="font-size: 2rem; color: var(--secondary); margin-bottom: 10px;"></i>
+                    <h4>1 yil kafolat</h4>
+                    <p>Barcha mahsulotlarimiz 1 yil kafolat bilan</p>
+                </div>
+                <div>
+                    <i class="fas fa-truck" style="font-size: 2rem; color: var(--secondary); margin-bottom: 10px;"></i>
+                    <h4> Toshkent bo'ylab yetkazib berish</h4>
+                    <p>Dostavka xizmati xam bor yetkazish</p>
+                </div>
+                <div>
+                    <i class="fas fa-exchange-alt"
+                        style="font-size: 2rem; color: var(--secondary); margin-bottom: 10px;"></i>
+                    <h4>Sovga:</h4>
+                    <p> Suv idish,Nasos, Sumka,Qulf</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <h3>Abu Sahiy Velosiped-Bolalar Moshinasi</h3>
+                    <p>Bolalar uchun eng sifatli velosiped va mashinalar. 10 yildan ortiq tajriba.</p>
+                    <p style="margin-top: 15px;">
+                        <i class="fas fa-phone"></i> +998 90 123 45 67<br>
+                        <i class="fas fa-envelope"></i> info@bolasport.uz
+                    </p>
+                </div>
+
+                <div>
+                    <h3>Kategoriyalar</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" onclick="filterByCategory('velosiped')">Bolalar velosipedlari</a></li>
+                        <li><a href="#" onclick="filterByCategory('mashina')">Pultli mashinalar</a></li>
+                        <li><a href="#">Yengil velosipedlar</a></li>
+                        <li><a href="#">Batareyali mashinalar</a></li>
+                        <li><a href="#">Aksessuarlar</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>Yordam</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Yetkazib berish</a></li>
+                        <li><a href="#">Kafolat</a></li>
+                        <li><a href="#">To'lov usullari</a></li>
+                        <li><a href="#">Ko'p so'raladigan savollar</a></li>
+                        <li><a href="#">Biz bilan bog'lanish</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="copyright">
+                <p>&copy; 2023 BolaSport. Barcha huquqlar himoyalangan.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- CART MODAL -->
+    <div class="modal" id="cart-modal">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="color: var(--dark);"><i class="fas fa-shopping-cart"></i> Sizning savatingiz</h2>
+                <button onclick="hideCart()"
+                    style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--dark);">&times;</button>
+            </div>
+
+            <div id="cart-items">
+                <!-- Savatdagi mahsulotlar -->
+                <p style="text-align: center; padding: 30px; color: #777;">Savat hozircha bo'sh</p>
+            </div>
+
+            <div style="border-top: 2px solid #eee; padding-top: 20px; margin-top: 20px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                    <span style="font-weight: bold;">Jami summa:</span>
+                    <span id="cart-total" style="font-weight: bold; font-size: 1.3rem; color: var(--primary);">0
+                        so'm</span>
+                </div>
+                <button onclick="showOrderForm()"
+                    style="width: 100%; padding: 15px; background: var(--secondary); color: var(--dark); border: none; border-radius: 5px; font-size: 1.1rem; font-weight: bold; cursor: pointer;">
+                    <i class="fas fa-credit-card"></i> Buyurtma berish
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ORDER FORM MODAL -->
+    <div class="modal" id="order-modal">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="color: var(--dark);"><i class="fas fa-clipboard-list"></i> Buyurtma ma'lumotlari</h2>
+                <button onclick="hideOrderForm()"
+                    style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--dark);">&times;</button>
+            </div>
+
+            <form id="order-form" onsubmit="submitOrder(event)">
+                <div class="form-group">
+                    <label class="form-label">Ismingiz *</label>
+                    <input type="text" class="form-input" id="customer-name" placeholder="Ismingizni kiriting" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Telefon raqamingiz *</label>
+                    <input type="tel" class="form-input" id="customer-phone" placeholder="+998 90 123 45 67" required
+                        pattern="^\+998[0-9]{9}$">
+                    <small style="color: #666;">+998 bilan boshlangan 12 raqam: +998901234567</small>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Manzilingiz</label>
+                    <input type="text" class="form-input" id="customer-address"
+                        placeholder="Toshkent shahri, Chilonzor tumani">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Qo'shimcha izoh</label>
+                    <textarea class="form-input" id="customer-notes"
+                        placeholder="Qo'shimcha talablaringiz yoki izohlaringiz" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">To'lov usuli</label>
+                    <select class="form-input" id="payment-method">
+                        <option value="naqd">Naqd pul</option>
+                        <option value="click">Click</option>
+                        <option value="payme">Payme</option>
+                        <option value="uzum">Uzum Bank</option>
+                    </select>
+                </div>
+
+                <div style="background: #f9f9f9; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                    <h4 style="margin-bottom: 10px;">Buyurtma xulosasi:</h4>
+                    <div id="order-summary">
+                        <!-- Buyurtma tafsilotlari yuklanadi -->
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i> Buyurtmani yuborish
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SUCCESS MODAL -->
+    <div class="modal" id="success-modal">
+        <div class="modal-content" style="text-align: center;">
+            <div style="font-size: 4rem; color: var(--secondary); margin-bottom: 20px;">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2 style="color: var(--dark); margin-bottom: 15px;">Buyurtma muvaffaqiyatli qabul qilindi!</h2>
+            <p id="success-message" style="margin-bottom: 25px; font-size: 1.1rem;">
+                Operator 5 daqiqa ichida siz bilan bog'lanadi.<br>
+                SMS orqali buyurtma raqamingizni olasiz.
+            </p>
+            <div id="order-details"
+                style="background: #f9f9f9; padding: 15px; border-radius: 5px; margin-bottom: 25px;">
+                <!-- Buyurtma tafsilotlari -->
+            </div>
+            <button onclick="closeSuccessModal()"
+                style="padding: 12px 30px; background: var(--primary); color: white; border: none; border-radius: 5px; font-size: 1rem; cursor: pointer;">
+                Yopish
+            </button>
+        </div>
+    </div>
+
+    <!-- ADMIN LOGIN MODAL -->
+    <div class="modal" id="admin-login-modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="color: var(--dark);"><i class="fas fa-user-cog"></i> Admin Kirish</h2>
+                <button onclick="hideAdminLogin()"
+                    style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--dark);">&times;</button>
+            </div>
+
+            <form id="admin-login-form" onsubmit="loginAdmin(event)">
+                <div class="form-group">
+                    <label class="form-label">Login</label>
+                    <input type="text" class="form-input" id="admin-login" placeholder="Login" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Parol</label>
+                    <input type="password" class="form-input" id="admin-password" placeholder="Parol" required>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-sign-in-alt"></i> Kirish
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // ====== MAHSULOTLAR BAZASI ======
+        const products = [
+            // ====== VELOSIPEDLAR ======
+            {
+                id: 1,
+                name: "трехколесный велосипед для взрослых китай",
+                category: "velosiped",
+                age: "12+ yosh",
+                price: 3000000,
+                oldPrice: 5000000,
+                image: "https://frankfurt.apollo.olxcdn.com/v1/files/r8vuczf2t6aq3-UZ/image;s=1000x700",
+                description: "12+ yosh bolalar uchun xavfsiz, rangli velosiped. Orqa qutisi bilan.",
+                features: ["3 g'ildirakli", "Xavfsiz", "Rangli"],
+                inStock: true,
+                badge: "Chegirma"
+            },
+            {
+                id: 2,
+                name: "Acura 29 гидравлика",
+                category: "velosiped",
+                age: "6-10 yosh",
+                price: 6500000,
+                oldPrice: 10000000,
+                image: "https://frankfurt.apollo.olxcdn.com/v1/files/zb9m3vjm32xs1-UZ/image;s=1000x700",
+                description: "6-10 yosh bolalar uchun tog 'velosipedi, 5 pog'onali tormoz.",
+                features: ["21 tezlik", "Aluminiy rama", "Disk tormoz"],
+                inStock: true,
+                badge: "Chegirma"
+            },
+            {
+                id: 3,
+                name: "Akura 26, Acura 26 гидравлика. СКИДКА!!!",
+                category: "velosiped",
+                age: "14+ yosh",
+                price: 5000000,
+                oldPrice: 6500000,
+                image: "https://frankfurt.apollo.olxcdn.com/v1/files/fsw4tiwovriu3-UZ/image;s=1000x700",
+                description: "Velosiped haydashni o'rganish uchun maxsus qo'shimcha g'ildiraklar bilan.",
+                features: ["Qo'shimcha g'ildirak", "O'quv uchun", "Rangli"],
+                inStock: true,
+                badge: "Chegirma"
+            },
+            {
+                id: 4,
+                name: "Велосипед 16 TOYOU",
+                category: "velosiped",
+                age: "3 dan 7 yoshgacha",
+                price: 1500000,
+                oldPrice: 1800000,
+                image: "https://frankfurt.apollo.olxcdn.com/v1/files/tx4q7b0whyuf2-UZ/image;s=1000x700",
+                description: "Велосипед 16 размер колесо. Рама алюминий",
+                features: ["Aluminiy rama", "Yengil"],
+                inStock: true,
+                badge: "Chegirma"
+            },
+            {
+                id: 5,
+                name: "Велосипед 12 SMARTMAX",
+                category: "velosiped",
+                age: "5-8 yosh",
+                price: 890000,
+                oldPrice: 1000000,
+                image: "https://frankfurt.apollo.olxcdn.com/v1/files/lfgj2comlxuf1-UZ/image;s=1000x700",
+                description: "Детский велосипед. Размер колеса 12. Для детей от 3 до 6 лет",
+                features: ["Aluminiy rama", "Yengil"],
+                inStock: true,
+                badge: "Chegirma"
+            },
+            {
+                id: 6,
+                name: "Велосипед 20 Pilot",
+                category: "velosiped",
+                age: "12+ yosh",
+                price: 1300000,
+                oldPrice: 1500000,
+                image: "https://frankfurt.apollo.olxcdn.com/v1/files/iehnz3h6ussq1-UZ/image;s=1000x700",
+                description: "Велосипед: размер колеса 20. Легкая.",
+                features: ["20 Pilot"],
+                inStock: true,
+                badge: "Chegirma"
+            },
+            {
+                id: 7,
+                name: "Картинг Go-kart karting Оригинал 12 V",
+                category: "mashina",
+                age: "3-8 yosh",
+                price: 1200000,
+                oldPrice: 1500000,
+                image: "https://frankfurt.apollo.olxcdn.com/v1/files/dspxn23n9frz1-UZ/image;s=1000x700",
+                description: "Картинг Go-kart karting Оригинал 12 V",
+                features: ["12 V", "4x4", "Batareyali"],
+                inStock: true,
+                badge: "Chegirma"
+            },
+            {
+                id: 8,
+                name: "Электро велосипед",
+                category: "velosiped",
+                age: "15+ yosh",
+                price: 6500000,
+                oldPrice: 8000000,
+                image: "https://frankfurt.apollo.olxcdn.com/v1/files/h3rpqsclhmkq2-UZ/image;s=1000x700",
+                description: "Электро велосипед",
+                features: ["Электро", "Tez", "Batareyali"],
+                inStock: true,
+                badge: ""
+            },
+            {
+                id: 9,
+                name: "Acura 12",
+                category: "velosiped",
+                age: "5-8 yosh",
+                price: 1800000,
+                image: "https://frankfurt.apollo.olxcdn.com/v1/files/u95kbdicso9x-UZ/image;s=1000x700",
+                description: "Acura 12",
+                features: ["Новый Велосипед Акура. Размер колеса 16."],
+                inStock: true,
+                badge: "Yangi"
+            },
+        ];
+
+        // ====== GLOBAL O'ZGARUVCHILAR ======
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let filteredProducts = [...products];
+        const ADMIN_CREDENTIALS = {
+            login: 'admin',
+            password: '123456'
+        };
+
+        // ====== DASTLABKI YUKLASH ======
+        document.addEventListener('DOMContentLoaded', function () {
+            displayProducts(products);
+            updateCartCount();
+            checkAdminLogin();
+        });
+
+        // ====== MAHSULOTLARNI KO'RSATISH ======
+        function displayProducts(productsArray) {
+            const productsGrid = document.getElementById('products-grid');
+            productsGrid.innerHTML = '';
+
+            if (productsArray.length === 0) {
+                productsGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px;">
+                        <i class="fas fa-search" style="font-size: 3rem; color: #ccc; margin-bottom: 20px;"></i>
+                        <h3 style="color: var(--dark);">Mahsulot topilmadi</h3>
+                        <p>Filtr shartlariga mos mahsulotlar topilmadi</p>
+                    </div>
+                `;
+                return;
+            }
+
+            productsArray.forEach(product => {
+                const oldPrice = product.oldPrice ?
+                    `<span class="product-old-price">${product.oldPrice.toLocaleString()} so'm</span>` : '';
+
+                const productCard = `
+                    <div class="product-card">
+                        ${product.badge ? `<div class="product-badge">${product.badge}</div>` : ''}
+                        <img src="${product.image}" alt="${product.name}" class="product-image">
+                        <div class="product-info">
+                            <div class="product-category">
+                                ${product.category === 'velosiped' ? '🚴 Velosiped' : '🏎️ Pultli Mashina'}
+                            </div>
+                            <h3 class="product-title">${product.name}</h3>
+                            <p style="color: #666; font-size: 0.9rem; margin-bottom: 10px;">${product.description}</p>
+                            <p style="color: var(--accent); font-size: 0.9rem; margin-bottom: 10px;">
+                                <i class="fas fa-child"></i> ${product.age}
+                            </p>
+                            <div class="product-price">
+                                ${oldPrice}
+                                ${product.price.toLocaleString()} so'm
+                            </div>
+                            <button class="add-to-cart" onclick="addToCart(${product.id})">
+                                <i class="fas fa-cart-plus"></i> Savatga qo'shish
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                productsGrid.innerHTML += productCard;
+            });
+        }
+
+        // ====== FILTR FUNKSIYALARI ======
+        function showAll() {
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            filteredProducts = [...products];
+            displayProducts(filteredProducts);
+        }
+
+        function filterByCategory(category) {
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (category === 'all') {
+                filteredProducts = [...products];
+            } else {
+                filteredProducts = products.filter(p => p.category === category);
+            }
+
+            displayProducts(filteredProducts);
+        }
+
+        function sortProducts() {
+            const sortValue = document.getElementById('sort-filter').value;
+            
+            let sortedArray = [...filteredProducts];
+            
+            switch (sortValue) {
+                case 'price-asc':
+                    // Arzondan qimmatga
+                    sortedArray.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-desc':
+                    // Qimmatdan arzonga
+                    sortedArray.sort((a, b) => b.price - a.price);
+                    break;
+                case 'name':
+                    // Alifbo bo'yicha
+                    sortedArray.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                default:
+                    // Standart tartib (asl tartibda)
+                    sortedArray = [...filteredProducts];
+            }
+            
+            displayProducts(sortedArray);
+        }
+
+        function resetFilters() {
+            // Saralashni standart holatga qaytarish
+            document.getElementById('sort-filter').value = 'default';
+            
+            // Barcha mahsulotlarni ko'rsatish
+            showAll();
+            
+            // Nav tugmalarini tozalash
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.nav-btn:first-child').classList.add('active');
+        }
+
+        // ====== SAVAT FUNKSIYALARI ======
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            
+            if (!product) return;
+            
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    quantity: 1
+                });
+            }
+            
+            updateCartCount();
+            saveCart();
+            showNotification(`${product.name} savatga qo'shildi!`);
+        }
+
+        function showCart() {
+            const modal = document.getElementById('cart-modal');
+            modal.style.display = 'flex';
+            updateCartDisplay();
+        }
+
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cart-items');
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p style="text-align: center; padding: 30px; color: #777;">Savat hozircha bo\'sh</p>';
+                document.getElementById('cart-total').textContent = '0 so\'m';
+                return;
+            }
+
+            let itemsHTML = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+
+                itemsHTML += `
+                    <div style="display: flex; align-items: center; padding: 15px 0; border-bottom: 1px solid #eee;">
+                        <img src="${item.image}" alt="${item.name}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px; margin-right: 15px;">
+                        <div style="flex: 1;">
+                            <h4 style="margin-bottom: 5px; font-size: 1rem;">${item.name}</h4>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <span style="font-weight: bold; color: var(--primary);">${item.price.toLocaleString()} so'm</span>
+                                    <div style="display: flex; align-items: center; margin-top: 5px;">
+                                        <button onclick="updateQuantity(${index}, -1)" style="width: 25px; height: 25px; border: 1px solid #ddd; background: white; border-radius: 3px; cursor: pointer;">-</button>
+                                        <span style="margin: 0 10px; font-weight: bold;">${item.quantity}</span>
+                                        <button onclick="updateQuantity(${index}, 1)" style="width: 25px; height: 25px; border: 1px solid #ddd; background: white; border-radius: 3px; cursor: pointer;">+</button>
+                                        <button onclick="removeFromCart(${index})" style="margin-left: 15px; background: none; border: none; color: var(--primary); cursor: pointer; font-size: 0.9rem;">
+                                            <i class="fas fa-trash"></i> O'chirish
+                                        </button>
+                                    </div>
+                                </div>
+                                <div style="font-weight: bold;">${itemTotal.toLocaleString()} so'm</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            cartItems.innerHTML = itemsHTML;
+            document.getElementById('cart-total').textContent = `${total.toLocaleString()} so'm`;
+        }
+
+        function hideCart() {
+            document.getElementById('cart-modal').style.display = 'none';
+        }
+
+        function updateQuantity(index, change) {
+            cart[index].quantity += change;
+
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+            }
+
+            updateCartCount();
+            saveCart();
+            updateCartDisplay();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartCount();
+            saveCart();
+            updateCartDisplay();
+        }
+
+        function updateCartCount() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').textContent = totalItems;
+        }
+
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        // ====== BUYURTMA FUNKSIYALARI ======
+        function showOrderForm() {
+            if (cart.length === 0) {
+                alert('Iltimos, avval mahsulot qo\'shing!');
+                return;
+            }
+
+            hideCart();
+            document.getElementById('order-modal').style.display = 'flex';
+            updateOrderSummary();
+        }
+
+        function hideOrderForm() {
+            document.getElementById('order-modal').style.display = 'none';
+        }
+
+        function updateOrderSummary() {
+            const orderSummary = document.getElementById('order-summary');
+            let total = 0;
+            let itemsHTML = '';
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                itemsHTML += `
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span>${item.name} x${item.quantity}</span>
+                        <span>${itemTotal.toLocaleString()} so'm</span>
+                    </div>
+                `;
+            });
+
+            orderSummary.innerHTML = `
+                ${itemsHTML}
+                <div style="border-top: 1px solid #ddd; margin-top: 10px; padding-top: 10px; font-weight: bold; display: flex; justify-content: space-between;">
+                    <span>Jami summa:</span>
+                    <span>${total.toLocaleString()} so'm</span>
+                </div>
+            `;
+        }
+
+        function submitOrder(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('customer-name').value;
+            const phone = document.getElementById('customer-phone').value;
+            const address = document.getElementById('customer-address').value || 'Kiritilmagan';
+            const notes = document.getElementById('customer-notes').value || 'Yo\'q';
+            const paymentMethod = document.getElementById('payment-method').value;
+
+            const orderNumber = 'ORD' + Date.now().toString().slice(-8);
+            const orderDate = new Date().toLocaleString('uz-UZ');
+
+            let orderDetails = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                orderDetails += `${item.name} x${item.quantity} - ${itemTotal.toLocaleString()} so'm\n`;
+            });
+
+            const smsMessage = `BolaSport.uz: Hurmatli ${name}, sizning #${orderNumber} raqamli buyurtmangiz qabul qilindi. Jami: ${total.toLocaleString()} so'm. Operator 5 daqiqa ichida bog'lanadi.`;
+
+            document.getElementById('success-message').innerHTML = `
+                <strong>${name}</strong>, buyurtmangiz qabul qilindi!<br>
+                Operator 5 daqiqa ichida siz bilan bog'lanadi.<br>
+                Telefoningizga SMS xabar yuborildi.
+            `;
+
+            document.getElementById('order-details').innerHTML = `
+                <h4>Buyurtma tafsilotlari:</h4>
+                <p><strong>Buyurtma raqami:</strong> #${orderNumber}</p>
+                <p><strong>Ism:</strong> ${name}</p>
+                <p><strong>Telefon:</strong> ${phone}</p>
+                <p><strong>Manzil:</strong> ${address}</p>
+                <p><strong>To'lov usuli:</strong> ${getPaymentMethodName(paymentMethod)}</p>
+                <p><strong>Jami summa:</strong> ${total.toLocaleString()} so'm</p>
+                <p><strong>Sana:</strong> ${orderDate}</p>
+            `;
+
+            const orderData = {
+                orderNumber,
+                name,
+                phone,
+                address,
+                notes,
+                paymentMethod,
+                orderDetails,
+                total,
+                date: orderDate,
+                cart: [...cart],
+                status: 'yangi'
+            };
+
+            saveOrderToLocalStorage(orderData);
+
+            hideOrderForm();
+            document.getElementById('success-modal').style.display = 'flex';
+
+            cart = [];
+            updateCartCount();
+            saveCart();
+
+            simulateSMS(name, phone, smsMessage);
+            sendTelegramNotification(orderData);
+        }
+
+        function getPaymentMethodName(method) {
+            const methods = {
+                'naqd': 'Naqd pul',
+                'click': 'Click',
+                'payme': 'Payme',
+                'uzum': 'Uzum Bank'
+            };
+            return methods[method] || method;
+        }
+
+        function saveOrderToLocalStorage(orderData) {
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
+            orders.push(orderData);
+            localStorage.setItem('orders', JSON.stringify(orders));
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('success-modal').style.display = 'none';
+        }
+
+        function simulateSMS(name, phone, message) {
+            console.log('=== SMS YUBORISH ===');
+            console.log('Qabul qiluvchi:', name);
+            console.log('Telefon:', phone);
+            console.log('Xabar:', message);
+            console.log('Xabar muvaffaqiyatli yuborildi!');
+        }
+
+        function sendTelegramNotification(orderData) {
+            // Telegram botga xabar yuborish
+            const botToken = '';
+            const chatId = '';
+
+            if (!botToken || !chatId) return;
+
+            const message = `
+🎯 *YANGI BUYURTMA* #${orderData.orderNumber}
+👤 *Mijoz:* ${orderData.name}
+📞 *Telefon:* ${orderData.phone}
+📍 *Manzil:* ${orderData.address}
+💰 *Jami:* ${orderData.total.toLocaleString()} so'm
+💳 *To'lov usuli:* ${getPaymentMethodName(orderData.paymentMethod)}
+📅 *Sana:* ${orderData.date}
+            `;
+        }
+
+        // ====== ADMIN FUNKSIYALARI ======
+        function showAdminLogin() {
+            document.getElementById('admin-login-modal').style.display = 'flex';
+        }
+
+        function hideAdminLogin() {
+            document.getElementById('admin-login-modal').style.display = 'none';
+        }
+
+        function loginAdmin(event) {
+            event.preventDefault();
+
+            const login = document.getElementById('admin-login').value;
+            const password = document.getElementById('admin-password').value;
+
+            if (login === ADMIN_CREDENTIALS.login && password === ADMIN_CREDENTIALS.password) {
+                localStorage.setItem('adminLoggedIn', 'true');
+                hideAdminLogin();
+                showNotification('Admin panelga muvaffaqiyatli kirdingiz!');
+                
+                // Admin panel ochish
+                window.open('admin.html', '_blank');
+            } else {
+                alert('Login yoki parol noto\'g\'ri!');
+            }
+        }
+
+        function checkAdminLogin() {
+            const isLoggedIn = localStorage.getItem('adminLoggedIn');
+            if (isLoggedIn === 'true') {
+                // Admin panelga yo'naltirish
+            }
+        }
+
+        // ====== NOTIFICATION FUNKSIYALARI ======
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--secondary);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 5px;
+                box-shadow: var(--shadow);
+                z-index: 3000;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.innerHTML = `<i class="fas fa-check"></i> ${message}`;
+
+            document.body.appendChild(notification);
+
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+
+            setTimeout(() => {
+                notification.remove();
+                style.remove();
+            }, 3000);
+        }
+
+        // ====== TELEFON RAQAM FORMATI ======
+        document.getElementById('customer-phone').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, '');
+
+            if (value.startsWith('998')) {
+                value = '+' + value;
+            } else if (value.startsWith('9')) {
+                value = '+998' + value;
+            }
+
+            e.target.value = value;
+        });
+        // Asosiy JavaScript qismini quyidagicha o'zgartiring:
+
+// Mahsulotlarni JSON fayldan yuklash
+async function loadProducts() {
+    try {
+        const response = await fetch('data.json');
+        const data = await response.json();
+        return data.products;
+    } catch (error) {
+        console.error('Mahsulotlarni yuklashda xatolik:', error);
+        // Agar fayl topilmasa, standart mahsulotlarni ishlatish
+        return products; // eski array
+    }
+}
+
+// Buyurtmalarni JSON ga saqlash
+function saveOrderToJSON(orderData) {
+    // orders.json faylini o'qish
+    fetch('orders.json')
+        .then(response => response.json())
+        .then(data => {
+            // Yangi buyurtmani qo'shish
+            data.orders.push(orderData);
+            
+            // Statistikani yangilash
+            data.orderStats.totalOrders += 1;
+            data.orderStats.totalRevenue += orderData.summary.total;
+            data.orderStats.averageOrderValue = data.orderStats.totalRevenue / data.orderStats.totalOrders;
+            
+            // Yangilangan datani saqlash (bu qism backend kerak)
+            // Amaliyotda bu API orqali backendga yuboriladi
+            console.log('Yangi buyurtma:', orderData);
+            console.log('Yangilangan orders:', data);
+        })
+        .catch(error => {
+            console.error('Buyurtmalarni saqlashda xatolik:', error);
+            // Agar fayl topilmasa, localStorageda saqlash
+            saveOrderToLocalStorage(orderData);
+        });
+}
+
+// Dastlabki yuklash funksiyasini yangilash
+document.addEventListener('DOMContentLoaded', async function () {
+    const loadedProducts = await loadProducts();
+    products = loadedProducts; // global products array ni yangilash
+    filteredProducts = [...products];
+    
+    displayProducts(filteredProducts);
+    updateCartCount();
+    checkAdminLogin();
+    
+    // Settings ni yuklash (agar kerak bo'lsa)
+    loadSettings();
+});
+
+// Settings ni yuklash
+async function loadSettings() {
+    try {
+        const response = await fetch('data.json');
+        const data = await response.json();
+        
+        // Siteni sozlamalarini yangilash
+        document.querySelector('.logo p').textContent = data.settings.siteName;
+        document.querySelector('.footer h3').textContent = data.settings.siteName;
+        document.querySelector('.footer .fa-phone').parentElement.innerHTML = 
+            `<i class="fas fa-phone"></i> ${data.settings.phoneNumbers[0]}<br>
+             <i class="fas fa-envelope"></i> ${data.settings.email}`;
+        
+        // Kategoriyalarni yangilash (agar kerak bo'lsa)
+        updateCategories(data.categories);
+        
+    } catch (error) {
+        console.error('Sozlamalarni yuklashda xatolik:', error);
+    }
+}
+
+// Kategoriyalarni yangilash
+function updateCategories(categories) {
+    // Nav tugmalarini yangilash (agar kerak bo'lsa)
+    categories.forEach(category => {
+        // Kategoriya tugmalarini yaratish yoki yangilash
+    });
+}
+
+// JSON fayllarni yaratish uchun funksiya
+function createJSONFiles() {
+    const productsData = {
+        products: products.map(p => ({
+            id: p.id,
+            name: p.name,
+            category: p.category,
+            age: p.age,
+            price: p.price,
+            oldPrice: p.oldPrice || null,
+            image: p.image,
+            description: p.description,
+            features: p.features || [],
+            inStock: p.inStock,
+            badge: p.badge || ""
+        }))
+    };
+    
+    console.log('Mahsulotlar JSON:', JSON.stringify(productsData, null, 2));
+    
+    // Bu JSON ni faylga saqlash uchun:
+    // 1. data.json faylini yaratish
+    // 2. orders.json faylini yaratish
+}
+    </script>
+</body>
+
+</html>

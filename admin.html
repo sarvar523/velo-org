@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BolaSport - Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <!-- ADMIN HEADER -->
+    <header class="admin-header">
+        <div class="container admin-header-content">
+            <div class="admin-logo">
+                <i class="fas fa-user-cog"></i>
+                <h1>BolaSport Admin</h1>
+            </div>
+            
+            <nav class="admin-nav">
+                <button class="admin-nav-btn" onclick="goToHome()">
+                    <i class="fas fa-home"></i> Bosh sahifa
+                </button>
+                <button class="admin-nav-btn" onclick="refreshOrders()">
+                    <i class="fas fa-redo"></i> Yangilash
+                </button>
+                <button class="admin-nav-btn" onclick="logoutAdmin()">
+                    <i class="fas fa-sign-out-alt"></i> Chiqish
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <div class="container">
+        <!-- STATS -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon orders">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="total-orders">0</h3>
+                    <p>Umumiy buyurtmalar</p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon revenue">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="total-revenue">0 so'm</h3>
+                    <p>Umumiy daromad</p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon customers">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="total-customers">0</h3>
+                    <p>Mijozlar</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="admin-main">
+            <!-- SIDEBAR -->
+            <div class="admin-sidebar">
+                <ul class="admin-menu">
+                    <li><a href="#" class="active" onclick="showSection('orders')">
+                        <i class="fas fa-shopping-cart"></i> Buyurtmalar
+                    </a></li>
+                    <li><a href="#" onclick="showSection('customers')">
+                        <i class="fas fa-users"></i> Mijozlar
+                    </a></li>
+                    <li><a href="#" onclick="showSection('products')">
+                        <i class="fas fa-box"></i> Mahsulotlar
+                    </a></li>
+                    <li><a href="#" onclick="showSection('analytics')">
+                        <i class="fas fa-chart-line"></i> Analitika
+                    </a></li>
+                    <li><a href="#" onclick="showSection('settings')">
+                        <i class="fas fa-cog"></i> Sozlamalar
+                    </a></li>
+                </ul>
+                
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+                    <h4 style="margin-bottom: 15px; color: var(--dark);">Tezkor harakatlar</h4>
+                    <button class="btn btn-secondary" onclick="exportOrders()" style="width: 100%; margin-bottom: 10px;">
+                        <i class="fas fa-file-export"></i> Eksport
+                    </button>
+                    <button class="btn btn-primary" onclick="sendBulkSMS()" style="width: 100%;">
+                        <i class="fas fa-sms"></i> SMS Yuborish
+                    </button>
+                </div>
+            </div>
+
+            <!-- CONTENT -->
+            <div class="admin-content">
+                <!-- ORDERS SECTION -->
+                <div id="orders-section" class="admin-section">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h2 style="color: var(--dark);"><i class="fas fa-shopping-cart"></i> Buyurtmalar</h2>
+                        <div style="display: flex; gap: 10px;">
+                            <select id="status-filter" class="filter-select" style="padding: 8px;" onchange="filterOrders()">
+                                <option value="all">Barcha holatlar</option>
+                                <option value="yangi">Yangi</option>
+                                <option value="qayta_aloqa">Qayta aloqa</option>
+                                <option value="yetkazilmoqda">Yetkazilmoqda</option>
+                                <option value="yakunlangan">Yakunlangan</option>
+                                <option value="bekor_qilingan">Bekor qilingan</option>
+                            </select>
+                            <input type="date" id="date-filter" class="filter-select" style="padding: 8px;" onchange="filterOrders()">
+                        </div>
+                    </div>
+                    
+                    <table class="admin-table" id="orders-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Mijoz</th>
+                                <th>Telefon</th>
+                                <th>Summa</th>
+                                <th>Holat</th>
+                                <th>Sana</th>
+                                <th>Harakatlar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-tbody">
+                            <!-- Buyurtmalar yuklanadi -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- CUSTOMERS SECTION -->
+                <div id="customers-section" class="admin-section" style="display: none;">
+                    <h2 style="color: var(--dark); margin-bottom: 20px;"><i class="fas fa-users"></i> Mijozlar</h2>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Ism</th>
+                                <th>Telefon</th>
+                                <th>Buyurtmalar soni</th>
+                                <th>Jami sarflagan</th>
+                                <th>Oxirgi buyurtma</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customers-tbody">
+                            <!-- Mijozlar yuklanadi -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- PRODUCTS SECTION -->
+                <div id="products-section" class="admin-section" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h2 style="color: var(--dark);"><i class="fas fa-box"></i> Mahsulotlar</h2>
+                        <button class="btn btn-primary" onclick="addProduct()">
+                            <i class="fas fa-plus"></i> Yangi mahsulot
+                        </button>
+                    </div>
+                    
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Nomi</th>
+                                <th>Kategoriya</th>
+                                <th>Narxi</th>
+                                <th>Qolgan</th>
+                                <th>Holat</th>
+                                <th>Harakatlar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="products-tbody">
+                            <!-- Mahsulotlar yuklanadi -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- ANALYTICS SECTION -->
+                <div id="analytics-section" class="admin-section" style="display: none;">
+                    <h2 style="color: var(--dark); margin-bottom: 20px;"><i class="fas fa-chart-line"></i> Analitika</h2>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+                        <div style="background: #f9f9f9; padding: 20px; border-radius: var(--radius);">
+                            <h4 style="margin-bottom: 15px;">Kunlik savdo</h4>
+                            <div id="daily-chart" style="height: 200px; display: flex; align-items: flex-end; gap: 10px;">
+                                <!-- Chart will be generated here -->
+                            </div>
+                        </div>
+                        
+                        <div style="background: #f9f9f9; padding: 20px; border-radius: var(--radius);">
+                            <h4 style="margin-bottom: 15px;">Kategoriyalar bo'yicha</h4>
+                            <div id="categories-chart" style="height: 200px;">
+                                <!-- Chart will be generated here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #f9f9f9; padding: 20px; border-radius: var(--radius);">
+                        <h4 style="margin-bottom: 15px;">Eng ko'p sotilgan mahsulotlar</h4>
+                        <div id="top-products">
+                            <!-- Top products will be shown here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SETTINGS SECTION -->
+                <div id="settings-section" class="admin-section" style="display: none;">
+                    <h2 style="color: var(--dark); margin-bottom: 20px;"><i class="fas fa-cog"></i> Sozlamalar</h2>
+                    
+                    <div style="background: #f9f9f9; padding: 20px; border-radius: var(--radius); margin-bottom: 20px;">
+                        <h4 style="margin-bottom: 15px;">SMS Sozlamalari</h4>
+                        <div class="form-group">
+                            <label class="form-label">SMS API Token</label>
+                            <input type="text" class="form-input" id="sms-token" placeholder="SMS provider token" style="width: 100%;">
+                        </div>
+                        <button class="btn btn-secondary" onclick="saveSMSSettings()">
+                            <i class="fas fa-save"></i> Saqlash
+                        </button>
+                    </div>
+                    
+                    <div style="background: #f9f9f9; padding: 20px; border-radius: var(--radius);">
+                        <h4 style="margin-bottom: 15px;">Telegram Bot Sozlamalari</h4>
+                        <div class="form-group">
+                            <label class="form-label">Bot Token</label>
+                            <input type="text" class="form-input" id="bot-token" placeholder="Telegram bot token" style="width: 100%;">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Chat ID</label>
+                            <input type="text" class="form-input" id="chat-id" placeholder="Admin chat ID" style="width: 100%;">
+                        </div>
+                        <button class="btn btn-secondary" onclick="saveTelegramSettings()">
+                            <i class="fas fa-save"></i> Saqlash
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ORDER DETAILS MODAL -->
+    <div class="modal" id="order-details-modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="color: var(--dark);"><i class="fas fa-file-invoice"></i> Buyurtma tafsilotlari</h2>
+                <button onclick="hideOrderDetails()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--dark);">&times;</button>
+            </div>
+            
+            <div id="order-details-content">
+                <!-- Order details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // ====== ADMIN FUNKSIYALARI ======
+        
+        // Login tekshirish
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('adminLoggedIn');
+            
+            if (isLoggedIn !== 'true') {
+                alert('Iltimos, avval tizimga kiring!');
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Statistikalarni yuklash
+            loadStats();
+            loadOrders();
+            loadCustomers();
+            loadProducts();
+        });
+        
+        // ====== STATISTIKA ======
+        function loadStats() {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            
+            // Umumiy buyurtmalar
+            document.getElementById('total-orders').textContent = orders.length;
+            
+            // Umumiy daromad
+            const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
+            document.getElementById('total-revenue').textContent = totalRevenue.toLocaleString() + ' so\'m';
+            
+            // Mijozlar soni
+            const uniqueCustomers = new Set(orders.map(order => order.phone));
+            document.getElementById('total-customers').textContent = uniqueCustomers.size;
+        }
+        
+        // ====== BUYURTMALAR ======
+        function loadOrders() {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const tbody = document.getElementById('orders-tbody');
+            
+            if (orders.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 30px; color: #777;">
+                            <i class="fas fa-shopping-cart" style="font-size: 2rem; margin-bottom: 10px; display: block; color: #ccc;"></i>
+                            Hozircha buyurtmalar yo'q
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = '';
+            
+            // So'nggi buyurtmalar birinchi
+            orders.reverse().forEach((order, index) => {
+                const statusBadge = getStatusBadge(order.status || 'yangi');
+                const date = new Date(order.date || Date.now()).toLocaleDateString('uz-UZ');
+                
+                const row = `
+                    <tr>
+                        <td><strong>#${order.orderNumber}</strong></td>
+                        <td>
+                            <strong>${order.name}</strong><br>
+                            <small>${order.address}</small>
+                        </td>
+                        <td>
+                            <a href="tel:${order.phone}" style="color: var(--accent); text-decoration: none;">
+                                ${order.phone}
+                            </a>
+                        </td>
+                        <td><strong>${order.total.toLocaleString()} so'm</strong></td>
+                        <td>
+                            <span class="status-badge ${statusBadge.class}">
+                                ${statusBadge.text}
+                            </span>
+                        </td>
+                        <td>${date}</td>
+                        <td>
+                            <button class="btn btn-small btn-secondary" onclick="viewOrderDetails('${order.orderNumber}')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-small btn-primary" onclick="callCustomer('${order.phone}')">
+                                <i class="fas fa-phone"></i>
+                            </button>
+                            <button class="btn btn-small" style="background: #ffc107; color: white;" onclick="changeOrderStatus('${order.orderNumber}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                
+                tbody.innerHTML += row;
+            });
+        }
+        
+        function getStatusBadge(status) {
+            const statuses = {
+                'yangi': { class: 'status-new', text: 'Yangi' },
+                'qayta_aloqa': { class: 'status-processing', text: 'Qayta aloqa' },
+                'yetkazilmoqda': { class: 'status-processing', text: 'Yetkazilmoqda' },
+                'yakunlangan': { class: 'status-completed', text: 'Yakunlangan' },
+                'bekor_qilingan': { class: 'status-cancelled', text: 'Bekor qilingan' }
+            };
+            
+            return statuses[status] || statuses['yangi'];
+        }
+        
+        function filterOrders() {
+            const status = document.getElementById('status-filter').value;
+            const date = document.getElementById('date-filter').value;
+            
+            // Bu joyda filtrlash logikasini qo'shishingiz mumkin
+            loadOrders(); // Hozircha oddiy reload
+        }
+        
+        function viewOrderDetails(orderNumber) {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const order = orders.find(o => o.orderNumber === orderNumber);
+            
+            if (!order) {
+                alert('Buyurtma topilmadi!');
+                return;
+            }
+            
+            let itemsHTML = '';
+            if (order.cart && order.cart.length > 0) {
+                order.cart.forEach(item => {
+                    itemsHTML += `
+                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
+                            <div>
+                                <strong>${item.name}</strong><br>
+                                <small>${item.price.toLocaleString()} so'm x ${item.quantity}</small>
+                            </div>
+                            <strong>${(item.price * item.quantity).toLocaleString()} so'm</strong>
+                        </div>
+                    `;
+                });
+            } else {
+                itemsHTML = '<p>Mahsulotlar ma\'lumotlari yo\'q</p>';
+            }
+            
+            const detailsHTML = `
+                <div>
+                    <h3 style="color: var(--dark); margin-bottom: 20px;">Buyurtma #${order.orderNumber}</h3>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                        <div>
+                            <h4 style="color: var(--dark); margin-bottom: 10px;">Mijoz ma'lumotlari</h4>
+                            <p><strong>Ism:</strong> ${order.name}</p>
+                            <p><strong>Telefon:</strong> ${order.phone}</p>
+                            <p><strong>Manzil:</strong> ${order.address}</p>
+                            <p><strong>Izoh:</strong> ${order.notes || 'Yo\'q'}</p>
+                        </div>
+                        
+                        <div>
+                            <h4 style="color: var(--dark); margin-bottom: 10px;">Buyurtma ma'lumotlari</h4>
+                            <p><strong>Sana:</strong> ${order.date}</p>
+                            <p><strong>Holat:</strong> ${getStatusBadge(order.status || 'yangi').text}</p>
+                            <p><strong>To'lov usuli:</strong> ${getPaymentMethodName(order.paymentMethod)}</p>
+                            <p><strong>Jami summa:</strong> <strong style="color: var(--primary);">${order.total.toLocaleString()} so'm</strong></p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: var(--dark); margin-bottom: 10px;">Mahsulotlar</h4>
+                        ${itemsHTML}
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-primary" onclick="callCustomer('${order.phone}')" style="flex: 1;">
+                            <i class="fas fa-phone"></i> Qo'ng'iroq qilish
+                        </button>
+                        <button class="btn btn-secondary" onclick="sendOrderSMS('${order.orderNumber}')" style="flex: 1;">
+                            <i class="fas fa-sms"></i> SMS yuborish
+                        </button>
+                        <button class="btn" style="background: #ffc107; color: white; flex: 1;" onclick="changeOrderStatus('${order.orderNumber}')">
+                            <i class="fas fa-edit"></i> Holatni o'zgartirish
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('order-details-content').innerHTML = detailsHTML;
+            document.getElementById('order-details-modal').style.display = 'flex';
+        }
+        
+        function hideOrderDetails() {
+            document.getElementById('order-details-modal').style.display = 'none';
+        }
+        
+        function callCustomer(phone) {
+            window.open(`tel:${phone}`, '_blank');
+        }
+        
+        function changeOrderStatus(orderNumber) {
+            const newStatus = prompt('Yangi holatni tanlang:\n1. Yangi\n2. Qayta aloqa\n3. Yetkazilmoqda\n4. Yakunlangan\n5. Bekor qilingan');
+            
+            if (!newStatus) return;
+            
+            const statusMap = {
+                '1': 'yangi',
+                '2': 'qayta_aloqa',
+                '3': 'yetkazilmoqda',
+                '4': 'yakunlangan',
+                '5': 'bekor_qilingan'
+            };
+            
+            const status = statusMap[newStatus] || 'yangi';
+            
+            // Buyurtma holatini yangilash
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const orderIndex = orders.findIndex(o => o.orderNumber === orderNumber);
+            
+            if (orderIndex !== -1) {
+                orders[orderIndex].status = status;
+                localStorage.setItem('orders', JSON.stringify(orders));
+                loadOrders();
+                showNotification('Buyurtma holati yangilandi!');
+            }
+        }
+        
+        function sendOrderSMS(orderNumber) {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const order = orders.find(o => o.orderNumber === orderNumber);
+            
+            if (!order) return;
+            
+            const message = prompt('SMS matnini kiriting:', `Hurmatli ${order.name}, sizning #${orderNumber} raqamli buyurtmangiz qabul qilindi. Rahmat!`);
+            
+            if (message) {
+                // SMS yuborish logikasi
+                console.log(`SMS yuborildi: ${order.phone}\n${message}`);
+                showNotification('SMS mijozga yuborildi!');
+            }
+        }
+        
+        function getPaymentMethodName(method) {
+            const methods = {
+                'naqd': 'Naqd pul',
+                'click': 'Click',
+                'payme': 'Payme',
+                'uzum': 'Uzum Bank'
+            };
+            return methods[method] || method;
+        }
+        
+        // ====== MIJOZLAR ======
+        function loadCustomers() {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const tbody = document.getElementById('customers-tbody');
+            
+            if (orders.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 30px; color: #777;">
+                            Mijozlar yo'q
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            // Mijozlarni guruhlash
+            const customers = {};
+            orders.forEach(order => {
+                if (!customers[order.phone]) {
+                    customers[order.phone] = {
+                        name: order.name,
+                        phone: order.phone,
+                        orders: 0,
+                        totalSpent: 0,
+                        lastOrder: order.date
+                    };
+                }
+                
+                customers[order.phone].orders++;
+                customers[order.phone].totalSpent += order.total;
+                
+                // Oxirgi buyurtma sanasini yangilash
+                if (new Date(order.date) > new Date(customers[order.phone].lastOrder || 0)) {
+                    customers[order.phone].lastOrder = order.date;
+                }
+            });
+            
+            tbody.innerHTML = '';
+            
+            Object.values(customers).forEach(customer => {
+                const row = `
+                    <tr>
+                        <td><strong>${customer.name}</strong></td>
+                        <td>${customer.phone}</td>
+                        <td>${customer.orders}</td>
+                        <td>${customer.totalSpent.toLocaleString()} so'm</td>
+                        <td>${new Date(customer.lastOrder).toLocaleDateString('uz-UZ')}</td>
+                    </tr>
+                `;
+                
+                tbody.innerHTML += row;
+            });
+        }
+        
+        // ====== MAHSULOTLAR ======
+        function loadProducts() {
+            const products = [
+                {
+                    id: 1,
+                    name: "3 G'ildirakli Qizil Velosiped",
+                    category: "velosiped",
+                    price: 450000,
+                    stock: 15,
+                    status: "Faol"
+                },
+                {
+                    id: 2,
+                    name: "Bolalar Mountain Velosipedi",
+                    category: "velosiped",
+                    price: 780000,
+                    stock: 8,
+                    status: "Faol"
+                },
+                {
+                    id: 3,
+                    name: "Jeep Radio Boshqariladigan",
+                    category: "mashina",
+                    price: 320000,
+                    stock: 20,
+                    status: "Faol"
+                },
+                {
+                    id: 4,
+                    name: "Sport Mashinasi Ferrari",
+                    category: "mashina",
+                    price: 280000,
+                    stock: 12,
+                    status: "Faol"
+                }
+            ];
+            
+            const tbody = document.getElementById('products-tbody');
+            tbody.innerHTML = '';
+            
+            products.forEach(product => {
+                const row = `
+                    <tr>
+                        <td>${product.name}</td>
+                        <td>${product.category === 'velosiped' ? '🚴 Velosiped' : '🏎️ Mashina'}</td>
+                        <td>${product.price.toLocaleString()} so'm</td>
+                        <td>${product.stock} dona</td>
+                        <td><span style="color: ${product.status === 'Faol' ? 'green' : 'red'};">${product.status}</span></td>
+                        <td>
+                            <button class="btn btn-small btn-secondary">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-small" style="background: #dc3545; color: white;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                
+                tbody.innerHTML += row;
+            });
+        }
+        
+        function addProduct() {
+            alert('Yangi mahsulot qo\'shish funksiyasi keyinroq qo\'shiladi');
+            // Bu joyda yangi mahsulot qo'shish formasi ochiladi
+        }
+        
+        // ====== ANALITIKA ======
+        function showAnalytics() {
+            // Kunlik savdo grafigi
+            const dailyChart = document.getElementById('daily-chart');
+            dailyChart.innerHTML = '';
+            
+            // 7 kunlik ma'lumotlar (simulyatsiya)
+            const dailyData = [1200000, 1500000, 1800000, 900000, 2100000, 2400000, 1700000];
+            const maxValue = Math.max(...dailyData);
+            
+            dailyData.forEach(value => {
+                const height = (value / maxValue) * 150;
+                const bar = document.createElement('div');
+                bar.style.cssText = `
+                    flex: 1;
+                    background: linear-gradient(to top, var(--primary), var(--accent));
+                    height: ${height}px;
+                    border-radius: 3px;
+                    position: relative;
+                `;
+                
+                const tooltip = document.createElement('div');
+                tooltip.textContent = (value/1000000).toFixed(1) + 'M';
+                tooltip.style.cssText = `
+                    position: absolute;
+                    top: -25px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    font-size: 0.8rem;
+                    white-space: nowrap;
+                `;
+                
+                bar.appendChild(tooltip);
+                dailyChart.appendChild(bar);
+            });
+            
+            // Kategoriyalar grafigi
+            const categoriesChart = document.getElementById('categories-chart');
+            categoriesChart.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: space-around; height: 100%;">
+                    <div style="text-align: center;">
+                        <div style="width: 100px; height: 100px; border-radius: 50%; background: conic-gradient(var(--primary) 0% 65%, var(--secondary) 65% 100%); margin: 0 auto 10px;"></div>
+                        <strong>Velosipedlar</strong><br>
+                        <span>65%</span>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="width: 100px; height: 100px; border-radius: 50%; background: conic-gradient(var(--secondary) 0% 35%, var(--primary) 35% 100%); margin: 0 auto 10px;"></div>
+                        <strong>Mashinalar</strong><br>
+                        <span>35%</span>
+                    </div>
+                </div>
+            `;
+            
+            // Eng ko'p sotilgan mahsulotlar
+            const topProducts = document.getElementById('top-products');
+            topProducts.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">
+                    <div style="background: white; padding: 15px; border-radius: 5px;">
+                        <h5 style="margin-bottom: 10px;">3 G'ildirakli Velosiped</h5>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>128 dona</span>
+                            <strong style="color: var(--primary);">57.6M so'm</strong>
+                        </div>
+                    </div>
+                    <div style="background: white; padding: 15px; border-radius: 5px;">
+                        <h5 style="margin-bottom: 10px;">Jeep Mashina</h5>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>85 dona</span>
+                            <strong style="color: var(--primary);">27.2M so'm</strong>
+                        </div>
+                    </div>
+                    <div style="background: white; padding: 15px; border-radius: 5px;">
+                        <h5 style="margin-bottom: 10px;">Mountain Velosiped</h5>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>42 dona</span>
+                            <strong style="color: var(--primary);">32.8M so'm</strong>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // ====== UMUMIY FUNKSIYALAR ======
+        function showSection(sectionId) {
+            // Barcha bo'limlarni yashirish
+            document.querySelectorAll('.admin-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Tanlangan bo'limni ko'rsatish
+            document.getElementById(`${sectionId}-section`).style.display = 'block';
+            
+            // Menu aktiv holatini o'zgartirish
+            document.querySelectorAll('.admin-menu a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Agar analytics bo'limi ko'rsatilsa, ma'lumotlarni yangilash
+            if (sectionId === 'analytics') {
+                showAnalytics();
+            }
+        }
+        
+        function refreshOrders() {
+            loadOrders();
+            loadStats();
+            showNotification('Ma\'lumotlar yangilandi!');
+        }
+        
+        function goToHome() {
+            window.location.href = 'index.html';
+        }
+        
+        function logoutAdmin() {
+            localStorage.removeItem('adminLoggedIn');
+            window.location.href = 'index.html';
+        }
+        
+        function exportOrders() {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            
+            if (orders.length === 0) {
+                alert('Eksport qilish uchun buyurtmalar yo\'q!');
+                return;
+            }
+            
+            // CSV formatga o'tkazish
+            let csv = 'Buyurtma raqami,Ism,Telefon,Manzil,Summa,Sana,Holat\n';
+            
+            orders.forEach(order => {
+                csv += `"${order.orderNumber}","${order.name}","${order.phone}","${order.address}","${order.total}","${order.date}","${order.status || 'yangi'}"\n`;
+            });
+            
+            // CSV faylni yuklab olish
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `buyurtmalar_${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            showNotification('Buyurtmalar CSV faylga yuklab olindi!');
+        }
+        
+        function sendBulkSMS() {
+            const message = prompt('Barcha mijozlarga yuboriladigan SMS matnini kiriting:');
+            
+            if (message) {
+                const orders = JSON.parse(localStorage.getItem('orders')) || [];
+                const uniquePhones = [...new Set(orders.map(order => order.phone))];
+                
+                alert(`${uniquePhones.length} ta mijozga SMS yuborish tayyor!\n\nMatn: ${message}\n\n(Eslatma: Bu faqat simulyatsiya. Real SMS yuborish uchun SMS API sozlang.)`);
+                
+                // Real SMS yuborish:
+                uniquePhones.forEach(phone => {
+                    sendSMS(phone, message);
+                });
+            }
+        }
+        
+        function saveSMSSettings() {
+            const token = document.getElementById('sms-token').value;
+            localStorage.setItem('smsToken', token);
+            showNotification('SMS sozlamalari saqlandi!');
+        }
+        
+        function saveTelegramSettings() {
+            const botToken = document.getElementById('bot-token').value;
+            const chatId = document.getElementById('chat-id').value;
+            
+            localStorage.setItem('telegramBotToken', botToken);
+            localStorage.setItem('telegramChatId', chatId);
+            
+            showNotification('Telegram sozlamalari saqlandi!');
+        }
+        
+        function showNotification(message) {
+            // Notification yaratish
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--secondary);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 5px;
+                box-shadow: var(--shadow);
+                z-index: 3000;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.innerHTML = `<i class="fas fa-check"></i> ${message}`;
+            
+            document.body.appendChild(notification);
+            
+            // Animatsiya qo'shish
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // 3 soniyadan keyin o'chirish
+            setTimeout(() => {
+                notification.remove();
+                style.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,150 @@
+{
+  "orders": [
+    {
+      "id": "ORD20240125001",
+      "customer": {
+        "name": "Ali Valiyev",
+        "phone": "+998901234567",
+        "address": "Toshkent shahri, Yunusobod tumani",
+        "email": "ali@example.com"
+      },
+      "items": [
+        {
+          "productId": 1,
+          "name": "трехколесный велосипед для взрослых китай",
+          "price": 3000000,
+          "quantity": 1,
+          "total": 3000000,
+          "image": "https://frankfurt.apollo.olxcdn.com/v1/files/r8vuczf2t6aq3-UZ/image;s=1000x700"
+        },
+        {
+          "productId": 5,
+          "name": "Велосипед 12 SMARTMAX",
+          "price": 890000,
+          "quantity": 2,
+          "total": 1780000,
+          "image": "https://frankfurt.aploxcdn.com/v1/files/lfgj2comlxuf1-UZ/image;s=1000x700"
+        }
+      ],
+      "summary": {
+        "subtotal": 4780000,
+        "delivery": 50000,
+        "total": 4830000,
+        "currency": "so'm"
+      },
+      "payment": {
+        "method": "naqd",
+        "status": "pending",
+        "paid": false
+      },
+      "delivery": {
+        "address": "Toshkent shahri, Yunusobod tumani",
+        "type": "courier",
+        "status": "pending",
+        "estimatedDate": "2024-01-27"
+      },
+      "status": "yangi",
+      "notes": "Ertalab yetkazib bering",
+      "createdAt": "2024-01-25T14:30:25Z",
+      "updatedAt": "2024-01-25T14:30:25Z"
+    },
+    {
+      "id": "ORD20240124001",
+      "customer": {
+        "name": "Dilnoza Qodirova",
+        "phone": "+998902345678",
+        "address": "Toshkent shahri, Mirzo Ulug'bek tumani",
+        "email": "dilnoza@example.com"
+      },
+      "items": [
+        {
+          "productId": 2,
+          "name": "Acura 29 гидравлика",
+          "price": 6500000,
+          "quantity": 1,
+          "total": 6500000,
+          "image": "https://frankfurt.apollo.olxcdn.com/v1/files/zb9m3vjm32xs1-UZ/image;s=1000x700"
+        }
+      ],
+      "summary": {
+        "subtotal": 6500000,
+        "delivery": 0,
+        "total": 6500000,
+        "currency": "so'm"
+      },
+      "payment": {
+        "method": "click",
+        "status": "completed",
+        "paid": true,
+        "paidAt": "2024-01-24T16:45:30Z"
+      },
+      "delivery": {
+        "address": "Toshkent shahri, Mirzo Ulug'bek tumani",
+        "type": "pickup",
+        "status": "delivered",
+        "deliveredAt": "2024-01-25T11:20:00Z"
+      },
+      "status": "yetkazilgan",
+      "notes": "",
+      "createdAt": "2024-01-24T15:20:10Z",
+      "updatedAt": "2024-01-25T11:20:00Z"
+    },
+    {
+      "id": "ORD20240123001",
+      "customer": {
+        "name": "Bekzod Rasulov",
+        "phone": "+998903456789",
+        "address": "Toshkent shahri, Yashnobod tumani",
+        "email": "bekzod@example.com"
+      },
+      "items": [
+        {
+          "productId": 7,
+          "name": "Картинг Go-kart karting Оригинал 12 V",
+          "price": 1200000,
+          "quantity": 1,
+          "total": 1200000,
+          "image": "https://frankfurt.apollo.olxcdn.com/v1/files/dspxn23n9frz1-UZ/image;s=1000x700"
+        },
+        {
+          "productId": 4,
+          "name": "Велосипед 16 TOYOU",
+          "price": 1500000,
+          "quantity": 1,
+          "total": 1500000,
+          "image": "https://frankfurt.apollo.olxcdn.com/v1/files/tx4q7b0whyuf2-UZ/image;s=1000x700"
+        }
+      ],
+      "summary": {
+        "subtotal": 2700000,
+        "delivery": 50000,
+        "total": 2750000,
+        "currency": "so'm"
+      },
+      "payment": {
+        "method": "payme",
+        "status": "completed",
+        "paid": true,
+        "paidAt": "2024-01-23T18:15:45Z"
+      },
+      "delivery": {
+        "address": "Toshkent shahri, Yashnobod tumani",
+        "type": "courier",
+        "status": "in_transit",
+        "estimatedDate": "2024-01-26"
+      },
+      "status": "jarayonda",
+      "notes": "Bepul sovgalar ham qo'shilsin",
+      "createdAt": "2024-01-23T17:40:20Z",
+      "updatedAt": "2024-01-24T10:15:30Z"
+    }
+  ],
+  "orderStats": {
+    "totalOrders": 3,
+    "totalRevenue": 14080000,
+    "pendingOrders": 1,
+    "completedOrders": 1,
+    "cancelledOrders": 0,
+    "averageOrderValue": 4693333.33
+  }
+}
